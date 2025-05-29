@@ -40,12 +40,12 @@ Tibor Pilz
 
 # Rust in a Nutshell
 
-<!-- ::v-clicks -->
+::v-clicks
 - Modern, fast, statically typed (like TS, but compiled)
 - Memory safety via ownership (no GC)
 - No nulls, no uncaught exceptions by default
 - Compiles to native code & WebAssembly
-<!-- :: -->
+::
 
 <!--
 Rust aims for C/C++ performance with high-level ergonomics. Ownership model enforces memory/thread safety at compile time. No garbage collector, so performance is predictable. Errors are handled with Result<T, E> instead of exceptions.
@@ -55,66 +55,80 @@ Rust aims for C/C++ performance with high-level ergonomics. Ownership model enfo
 
 # Rust Ownership Model
 
-<!-- ::v-clicks -->
+::v-clicks
 - Each value has a single owner
 - Borrowing checked at compile time
 - Prevents data races & null-pointer bugs
 - Contrast: JS/TS uses GC, allows null/undefined
-<!-- :: -->
+::
 
 ---
 
 # Error Handling: Rust vs TypeScript
 
-<!-- ::v-clicks -->
+::v-clicks
 - Rust: No nulls, no exceptions by default
 - Use `Option<T>` for optional values
 - Use `Result<T, E>` for errors
 - Forces explicit error handling
-<!-- :: -->
+::
 
 ---
 
 # Rust & WebAssembly
 
-<!-- ::v-clicks -->
+::v-clicks
 - Rust compiles to efficient machine code
 - Can target WebAssembly (WASM)
 - Enables running Rust in the browser
 - Leptos uses WASM for client-side code
-<!-- :: -->
+::
 
 ---
 
 # What is Leptos?
 
-<!-- ::v-clicks -->
+::v-clicks
 - Full-stack Rust web framework
 - Write frontend & backend in one codebase
 - Supports SSR, client-side, and hybrid apps
 - Isomorphic: server functions callable from client
 - Fine-grained reactivity (no virtual DOM)
-<!-- :: -->
+::
 
 ---
 
 # Leptos: Mental Model
 
-<!-- ::v-clicks -->
+::v-clicks
 - Like combining Vue (UI) + NestJS (server) in Rust
 - Components, state, routing feel familiar
 - One language for UI & backend logic
-<!-- :: -->
+::
 
 ---
 
 # Leptos Reactivity: Signals
 
-<!-- ::v-clicks -->
+::v-clicks
 - Signals: reactive values, notify subscribers on change
 - Similar to Vue's ref/reactivity
 - Built-in state management
-<!-- :: -->
+::
+
+---
+
+# Vue Ref Example
+
+```typescript
+import { ref } from 'vue';
+
+const count = ref(0);
+
+function increment() {
+  count.value++;
+}
+```
 
 ---
 
@@ -122,38 +136,20 @@ Rust aims for C/C++ performance with high-level ergonomics. Ownership model enfo
 
 ```rust
 let (count, set_count) = leptos::signal(0);
-// count() to get, set_count(new) to set
+
+let increment = move |_| set_count.update(|c| *c += 1);
 ```
 
 <!--
 You might've seen something similar with the `useState` hooks in React
 -->
 
----
-
-# Vue Ref Example
-
-```js
-import { ref } from 'vue';
-const count = ref(0);
-function increment() { count.value++; }
-```
-
----
-
-# Counter Component: Leptos vs Vue
-
-<!-- ::v-clicks -->
-- Both use reactive state, auto UI updates
-- Leptos: signals, direct DOM updates (no vDOM)
-- Vue: ref, virtual DOM
-<!-- :: -->
 
 ---
 
 # Leptos Counter Example
 
-```rust
+```rust {*|1,2|3|4,5|6-12}
 #[component]
 fn Counter() -> impl IntoView {
     let (count, set_count) = leptos::signal(0);
@@ -193,11 +189,11 @@ const increment = () => { count.value += 1; };
 
 # SSR & Hydration in Leptos
 
-<!-- ::v-clicks -->
+::v-clicks
 - SSR: Render HTML on server for fast first load & SEO
 - Hydration: WASM takes over, attaches event handlers
 - Like Nuxt.js/Vue SSR, but in Rust
-<!-- :: -->
+::
 
 ---
 
@@ -211,22 +207,22 @@ const increment = () => { count.value += 1; };
 
 # SSR Benefits
 
-<!-- ::v-clicks -->
+::v-clicks
 - Faster initial render
 - Better SEO
 - Streaming SSR (send HTML in chunks)
-<!-- :: -->
+::
 
 ---
 
 # Full-Stack Magic: Server Functions
 
-<!-- ::v-clicks -->
+::v-clicks
 - Rust functions annotated with #[server]
 - Run on server, callable from client as async fn
 - Leptos generates HTTP endpoint & client stub
 - No manual API layer needed
-<!-- :: -->
+::
 
 ---
 
@@ -266,30 +262,30 @@ view! {
 
 # Server Functions: TS Comparison
 
-<!-- ::v-clicks -->
+::v-clicks
 - NestJS: define controller, expose endpoint
 - Vue: call endpoint via fetch/axios
 - Leptos: one function, both API & client call
-<!-- :: -->
+::
 
 ---
 
 # Security Note
 
-<!-- ::v-clicks -->
+::v-clicks
 - Server functions are public HTTP APIs
 - Secure them as you would any endpoint
-<!-- :: -->
+::
 
 ---
 
 # JS Interop & WASM
 
-<!-- ::v-clicks -->
+::v-clicks
 - Leptos uses wasm-bindgen & web_sys for JS interop
 - Call JS/Web APIs from Rust
 - Integrate JS libraries (with care)
-<!-- :: -->
+::
 
 ---
 
@@ -306,23 +302,23 @@ if let Some(storage) = window().and_then(|w| w.local_storage().ok().flatten()) {
 
 # Integrating JS Libraries
 
-<!-- ::v-clicks -->
+::v-clicks
 - Use wasm-bindgen for extern bindings
 - Best for utility libs or Web APIs
 - DOM-manipulating libs may conflict with Leptos
-<!-- :: -->
+::
 
 ---
 
 # Takeaways for TS Devs
 
-<!-- ::v-clicks -->
+::v-clicks
 - Explicit error handling (Result mindset)
 - Make invalid states unrepresentable (discriminated unions)
 - Prefer immutability, minimize side effects
 - Embrace strict tooling & documentation
 - Rust/WASM for perf-critical TS tasks
-<!-- :: -->
+::
 
 ---
 
@@ -354,11 +350,11 @@ type ArticleState =
 
 # Conclusion
 
-<!-- ::v-clicks -->
+::v-clicks
 - Rust & Leptos: strong guarantees, full-stack in one language
 - Familiar concepts for TS devs (components, SSR, reactivity)
 - Try Leptos for a small project or adopt Rust-inspired patterns in TS
-<!-- :: -->
+::
 
 ---
 
